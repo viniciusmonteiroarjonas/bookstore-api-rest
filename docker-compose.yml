@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql-bookstore
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_USER: bookstore
+      MYSQL_PASSWORD: bookstore
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: bookstore
+
+  prometheus:
+    image: prom/prometheus:v2.24.1
+    container_name: prometheus-bookstore
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana_bookstore
+    ports:
+      - 3000:3000
